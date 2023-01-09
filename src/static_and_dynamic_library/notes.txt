@@ -1,0 +1,39 @@
+Static Library build Steps 
+
+firstway - 
+    gcc lib_MyMath.c lib_myPrint.c lib_myApp.c -o myApp 
+
+secondWay -
+    // Compile the library module once so that you do not need to compile if no changes in library
+    gcc -c lib_MyMath.c lib_myPrint.c
+    gcc lib_MyMath.o lib_myPrint.o myApp.c -o myApp
+
+thirdWay -
+    // If there are so many files in library then we can zip the file in smart way 
+    // where it have index to file as well 
+
+    gcc -c lib_myMath.c lib_myPrint.c
+
+    // r - replace , c - create , s - index 
+    ar rcs lib_myLib.a lib_myMath.o lib_myPrint.o
+
+    gcc -o myApp myApp.c lib_myLib.a -L.
+
+
+
+    Dynamic Library build steps 
+    - first we compile library to create object files using the option -fPIC
+
+    there are 3 ways -
+    1# Build the library and place the library in one of the known library path
+
+    2# Build the library and give the path in LD_LIBRARY_PATH
+
+    3# Third way is to load the libray at the run time 
+        - Load the library from the path using dlopen() and get its handle
+        - Use the handle to get the access (function pointer) to the specific fuctions
+           wes intend to use by dlsym()
+        - Use the function pointers to call the functions in the shared library 
+        - Finally, unload the library with dclose()
+        
+
